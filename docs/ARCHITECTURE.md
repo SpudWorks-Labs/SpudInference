@@ -2,7 +2,7 @@
 
 ## Overview
 
-SpudInference is a high-performance, local LLM orchestration engine designed to achieve GPU-competitive inference speeds on consumer-grade CPUs. By leveraging **Speculative Decoding** (Draft-then-Verify) and a **memory-safe Rust core**, SpudInference targets a $$2\times  -3\times$$ speedup over standard auto-regressive Python implementations.
+SpudInference is a high-performance, local LLM orchestration engine designed to achieve GPU-competitive inference speeds on consumer-grade CPUs. By leveraging **Speculative Decoding** (Draft-then-Verify) and a **memory-safe Rust core**, SpudInference targets a $2\times -3\times$ speedup over standard auto-regressive Python implementations.
 
 ---
 
@@ -31,7 +31,7 @@ To maximize development velocity without sacrificing runtime performance:
 - **Framework:** `Textual` for a high-performance Terminal User Interface. (TUI)
 - **Features:**
   - **Chat Mode:** Streaming response display with real-time Tokens-Per-Second (TPS) metrics.
-  - **Settings:** Model path configuration,  quantization level selection $${Q4_K_M, Q8_0}$$, and "Draft-to-Taget" ratio tuning.
+  - **Settings:** Model path configuration,  quantization level selection $'\(Q4_K_M, Q8_0\)$, and "Draft-to-Taget" ratio tuning.
 
 ### Inference Engine (Rust)
 
