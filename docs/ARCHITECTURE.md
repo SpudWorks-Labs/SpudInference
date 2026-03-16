@@ -2,7 +2,7 @@
 
 ## Overview
 
-SpudInference is a high-performance, local LLM orchestration engine designed to achieve GPU-competitive inference speeds on consumer-grade CPUs. By leveraging **Speculative Decoding** (Draft-then-Verify) and a **memory-safe Rust core**, SpudInference targets a $2 \times -3x)$ speedup over standard auto-regressive Python implementations.
+SpudInference is a high-performance, local LLM orchestration engine designed to achieve GPU-competitive inference speeds on consumer-grade CPUs. By leveraging **Speculative Decoding** (Draft-then-Verify) and a **memory-safe Rust core**, SpudInference targets a $2 \times -3x$ speedup over standard auto-regressive Python implementations.
 
 ---
 
