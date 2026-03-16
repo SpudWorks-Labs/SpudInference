@@ -31,7 +31,9 @@ To maximize development velocity without sacrificing runtime performance:
 - **Framework:** `Textual` for a high-performance Terminal User Interface. (TUI)
 - **Features:**
   - **Chat Mode:** Streaming response display with real-time Tokens-Per-Second (TPS) metrics.
-  - **Settings:** Model path configuration,  quantization level selection $(Q4\_K\_M, Q8\_0)$, and "Draft-to-Taget" ratio tuning.
+  - **Settings:** Model path configuration,  quantization level selection $$
+\{ Q4\_K\_M, Q8\_0 \}
+$$, and "Draft-to-Taget" ratio tuning.
 
 ### Inference Engine (Rust)
 
