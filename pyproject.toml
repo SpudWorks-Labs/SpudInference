@@ -1,0 +1,14 @@
+[build-system]
+requires = ["maturin>=1.0,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "spud_inference"
+requires-python = ">=3.8"
+dependencies = [
+    "textual",
+    "numpy"
+]
+
+[tool.maturin]
+features = ["pyo3/extension-module"]
