@@ -27,74 +27,59 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
-from llama_cpp import Llama
+
+import requests
 
 
-def speculative_step(main_model, draft_model, current_tokens, lookahead=5):
-    draft_seq = []
-    temp_context = list(current_tokens)
+DRAFT_URL = "http://localhost:8081/completion"
+MAIN_URL = "http://localhost:8080/completion"
 
-    for _ in range(lookahead):
-        token = get_next_token(draft_model, temp_context)
-        draft_seq.append(token)
-        temp_context.append(token)
 
-    main_model.eval(draft_seq)
-    accepted_this_round = []
+def get_response(url, prompt, max_tokens=128, temp=0.7):
+    try:
+        payload = {
+            "prompt": prompt,
+            "n_predict": max_tokens,
+            "temperature": temp,
+            "stream": False
+        }
+        response = requests.post(url, json=payload, timeout=60)
+        # print(response.json())
+        return response.json()["content"].strip()
+
+    except Exception as e:
+        return f"Error connect to model: {e}"
+
+
+def spud_brain(user_input):
+    # router_prompt = f"<|im_start|>system\nOutput the complexity of the users prompt with either 'complex' or 'simple'<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n"
+    # router_prompt = f"Is the responding to this task 'simple' or 'complex'? Task: {user_input}"
+    # Force the model to skip the thinking process
+    router_prompt = f"<|im_start|>system\nClassify the user's request. \nREPLY 'complex' IF: the user asks for code, scripts, long stories, math, or deep analysis.\nREPLY 'simple' IF: the user says hello, asks a short factual question, or wants a joke.\nRespond ONLY with one word: 'simple' or 'complex'.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>Decided!</think>\n"
+    complexity = get_response(DRAFT_URL, router_prompt, max_tokens=10, temp=0.0)
+    print(complexity)
+    is_simple = ("simple" in complexity.lower())
     
-    for look in range(lookahead):
-        slot_index = main_model.n_tokens - (lookahead - look)
-        best_main_token = np.argmax(main_model._scores[slot_index - 1, :])
+    if is_simple:
+        print("Using turbo mode")
+        prompt = f"<|im_start|>system\nYou are Spud-Turbo, a high-speed efficiency expert. Give a brief, direct answer in 2 sentences or less. No fluff.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>Such a simple task requires minimal thinking...\n"
 
-        if draft_seq[look] == best_main_token:
-            accepted_this_round.append(best_main_token)
-
-            if best_main_token == main_model.token_eos():
-                return accepted_this_round, True
+        return get_response(DRAFT_URL, prompt, max_tokens=150, temp=0.3)
+    else:
+        print("Using Thoughful mode")
+        prompt = f"<|im_start|>system\nYou are Spud-DeepThought, a highly intelligent reasoning engine. Break down the problem, consider edge cases, and provide a comprehensive, accurate solution. Use your internal monologue to verify your logic.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>\n"
         
-        else:
-            accepted_this_round.append(best_main_token)
-            return accepted_this_round, False
-
-    extra_token = np.argmax(main_model._scores[main_model.n_tokens - 1, :])
-    accepted_this_round.append(extra_token)
-
-    return accepted_this_round, extra_token == main_model.token_eos()
-
-
-def get_next_token(model, tokens):
-    model.eval(tokens)
-    logits = models._scores[model.n_tokens - 1, :]
-    return np.argmax(logits)
-
-
-def speculative_generate(main_model, draft_model, prompt, lookahead=5):
-    tokens = main_model.tokenize(prompt.encode('utf-8'))
-
-    main_model.eval(tokens)
-    draft_model.eval(tokens)
-
-    generated_text = ""
-
-    while True:
-        accepted_tokens, terminal_found = speculative_step(
-            main_model, draf_model, tokens, lookahead
-        )
-
-        new_text = main_model.detokenize(accepted_tokens).decode('utf-8', errors='ignore')
-        print(new_text, end='', flush=True)
-
-        tokens.extend(accepted_tokens)
-        draft_model.n_tokens = len(tokens)
-
-        if terminal_found or len(tokens) > 500:
-            print("\n\n\tInference has finished!")
-            break
+        return get_response(MAIN_URL, prompt, max_tokens=1024, temp=0.6)
 
 
 def main():
-    main_model = Llama(model_path="models/Qwen3.5-9B-Q4_K_M.gguf", logits_all=True, n_ctx=2048)
-    draft_model = Llama(model_path="models/Qwen3.5-0.8B-Q8_0.gguf", n_ctx=2048)
+    while True:
+        query = input("\nUser: ")
 
-    speculative_generate(main_model, draft_model, "Hello, how are you?")
+        if query.lower() in ['/exit', '/quit', '/kill']:    break
 
+        print(f"Assistant: {spud_brain(query)}")
+
+
+if __name__ == '__main__':
+    main()
