@@ -15,3 +15,4 @@
 
 ## TO-DO
 [!] Test the produced code.
+[!] Add an inference time function wrapper.
