@@ -57,8 +57,11 @@ To maximize development velocity without sacrificing runtime performance:
 ```plaintext
 SpudInference/
 ├── docs/
-│   ├── ARCHITECTURE.md         # This document
+│   ├── ARCHITECTURE.md
 │   └── DEV_LOG.md
+├── models/                     # The LLM Models required for this project. (Sym-Links)
+│   ├── Qwen3.5-0.8B-Q8_0.gguf
+│   └── Qwen3.5-9B-Q4_K_M.gguf
 ├── notebooks/
 │   └── benchmarks.ipynb        # TPS Comparison: Python vs. Rust-Accelerated
 ├── src/
@@ -66,6 +69,7 @@ SpudInference/
 │   ├── lib.rs                  # Rust Engine (FFI Layer)
 │   └── main.py
 ├── Cargo.toml                  # Rust manifest (Candle, Rayon, PyO3)
+├── LICENSE
 ├── pyproject.toml
 ├── README.md
 └── requirements.txt
