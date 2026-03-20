@@ -1,2 +1,9 @@
 tests/
 models/*
+src/engine/__pycache__/
+spudbrain/
+spudbrain-train/
+llama-cpp-python/
+train.txt*
+*.jsonl
+*.gguf
