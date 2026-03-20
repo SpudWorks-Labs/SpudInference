@@ -38,9 +38,15 @@
 
 * 06:01
     - Updated the `ARCHITECTURE.md` to reflect the Project Tree updates.
+    - Changed the main program into a `textual` TUI. (Might go back to regular TUI for simplicity)
+
+- 18:51
+    - Updated the `README.md` to reflect what the actual current program is.
+    - Need to add a project map. (Maybe in the ARCHITECTURE, but I also need to link that)
+    - The `ARCHITECTURE.md` now needs to be updated to reflect the actual architecture.
 
 
 ## TO-DO
-[!] Add an inference time function wrapper.
-[!] A future download models from cloud/link option.
 [!] Need to have a folder for generated files. (train.txt, datasets, etc.)
+[.] Add an inference time function wrapper.
+[.] A future download models from cloud/link option.

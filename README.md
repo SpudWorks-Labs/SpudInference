@@ -1,7 +1,8 @@
 # SpudInference
 
-This project's goal is to research and find ways to make Local LLM Inference
-faster on low-end CPUs.
+SpudInference is a Local LLM Tool Menu that allows creating `.gguf` files, training datasets,
+and LoRA Adaptes using those datasets. The main goal is to attain GPU-competitive speeds on
+low-end CPUs.
 
 ---
 
@@ -11,14 +12,14 @@ faster on low-end CPUs.
 git clone https://github.com/SpudWorks-Labs/SpudInference
 cd SpudInference
 
-# ~ Run the inference module. ~ #
+# ~ Create a virtual environment and install dependencies. ~ #
+python -m venv .name_of_env
+source .name_of_env/bin/activate
+pip install -r requirements.txt
+
+# ~ Execute the program. ~ #
 python src/main.py
 ```
-
-## Tech Stack
-* **Orchestration:** Python (Textual TUI)
-* **Core Engine:** Rust (Candle ML Framework)
-* **Models:** Qwen 3.5 (9B Target / 0.8B Draft)
 
 ---
 
