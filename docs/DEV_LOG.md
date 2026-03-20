@@ -29,6 +29,16 @@
     - Also created the requests version that reaches the llama-server API.
       No I need to make the Thinking Model a bit faster.
 
+*2026/03/20*
+* 05:34
+    - Starting to create the tool menu.
+
+* 05:46
+    - Changing the Project structure to allow for the tools.
+
+* 06:01
+    - Updated the `ARCHITECTURE.md` to reflect the Project Tree updates.
+
 
 ## TO-DO
 [!] Add an inference time function wrapper.
