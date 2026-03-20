@@ -62,8 +62,6 @@ SpudInference/
 ├── models/                     # The LLM Models required for this project.
 │   ├── Qwen3.5-0.8B-Q8_0.gguf   # Sym-Link
 │   └── Qwen3.5-9B-Q4_K_M.gguf   # Sym-Link
-├── notebooks/
-│   └── benchmarks.ipynb        # TPS Comparison: Python vs. Rust-Accelerated
 ├── src/
 │   ├── engine/                 # Core math and model loading logic
 │   │   └── brain.py

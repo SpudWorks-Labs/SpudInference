@@ -43,3 +43,4 @@
 ## TO-DO
 [!] Add an inference time function wrapper.
 [!] A future download models from cloud/link option.
+[!] Need to have a folder for generated files. (train.txt, datasets, etc.)
