@@ -6,6 +6,7 @@ from datasets import load_dataset
 from safetensors.torch import save_file
 
 
+# Make user inputs.
 MODEL_PATH = "/home/bruhtato/Downloads/Qwen3.5-0.8B"
 DATA_FILE = "./train.txt"
 OUTPUT_DIR = "./spudbrain"

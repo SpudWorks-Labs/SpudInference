@@ -28,19 +28,21 @@ def spud_brain(user_input):
     complexity = get_response(DRAFT_URL, router_prompt, max_tokens=10, temp=0.0)
     is_simple = ("simple" in complexity.lower())
     
-    if True:#is_simple:
+    if is_simple:
         print("Using turbo mode")
         prompt = f"<|im_start|>system\nYou are Spud-Turbo, a high-speed efficiency expert. Give a brief, direct answer in 2 sentences or less. No fluff.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>Such a simple task requires minimal thinking...\n"
 
         return get_response(DRAFT_URL, prompt, max_tokens=150, temp=0.3)
-    # else:
-    #     print("Using Thoughful mode")
-    #     prompt = f"<|im_start|>system\nYou are Spud-DeepThought, a highly intelligent reasoning engine. Break down the problem, consider edge cases, and provide a comprehensive, accurate solution. Use your internal monologue to verify your logic.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    else:
+        print("Using Thoughful mode")
+        prompt = f"<|im_start|>system\nYou are Spud-DeepThought, a highly intelligent reasoning engine. Break down the problem, consider edge cases, and provide a comprehensive, accurate solution. Use your internal monologue to verify your logic.<|im_end|>\n<|im_start|>user\n{user_input}<|im_end|>\n<|im_start|>assistant\n<think>\n"
         
-    #     return get_response(MAIN_URL, prompt, max_tokens=1024, temp=0.6)
+        return get_response(MAIN_URL, prompt, max_tokens=1024, temp=0.6)
 
 
 def chat():
+    print("You are now chatting to The SpudBrain!\n")
+
     while True:
         query = input("\nUser: ")
 

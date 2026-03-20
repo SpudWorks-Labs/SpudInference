@@ -28,35 +28,94 @@
 """
 
 
+import os
+import sys
+
 from engine.brain import chat
 
 
 def print_menu():
+    commands = {
+        '/chat': "Chat to The SpudBrain.",
+        '/convert': "Convert datasets for training.",
+        '/exit': "Quit the program.",
+        '/help': "Display more commands that are available.",
+        '/train': "Start the training tool"
+    }
+
     print("Welcome to SpudInference!\n\nHere are the available commands:\n")
-    print("\t/chat : Chat to the LLM.\n\t/train : Start the training tool")
-    print("\t/convert : Convert datasets for training.\n\t/exit : Quit the program.")
+
+    for cmd, desc in commands.items():
+        print(f"\t{cmd} : {desc}")
+
+
+def clear():
+    os.system('clear' if sys.platform != 'nt' else 'cls')
+
+
+def wait():
+    input("\n\nPress enter to continue...")
+
+
+def help_menu():
+    clear()
+
+    commands = {
+        '/chat': "Chat to The SpudBrain.",
+        '/convert': "Convert datasets for training.",
+        '/exit': "Quit the program.",
+        '/help': "Display all of the available commands.",
+        '/train': "Start training a model with a dataset.",
+        '/clear': "Clear the entire terminal screen."
+    }
+
+
+    print("Here are all of the available commands:\n")
+
+    for cmd, desc in commands.items():
+        print(f"\t{cmd}: {desc}")
+
+    wait()
 
 
 def main():
+    clear()
+
     while True:
         print_menu()
 
-        user_input = input(">>> ").lower()
+        user_input = input("\n\n>>> ").lower()
 
         if user_input == '/exit':
             break
         elif user_input == '/train':
             # train.py / clean_tensors.py
-            pass
+            print("Training hook in progress!")
+
+            wait()
         elif user_input == '/convert':
             # dataset_handling.py
-            pass
+            print("Conversion hook in progress!")
         elif user_input == '/chat':
+            clear()
             chat()
+
+        elif user_input == '/clear':
+            clear()
+            continue
+
+        elif '/help':
+            help_menu()
+
         else:
-            print("Sorry, that is not a valid command!")
+            print(f"Sorry, '{user_input}' is not a valid command!")
+
+            wait()
+
+        clear()
 
 
 if __name__ == '__main__':
     main()
 
+    print("Good-bye, thank you for using SpudInference!")
