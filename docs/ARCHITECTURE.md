@@ -2,58 +2,32 @@
 
 ## Overview
 
-SpudInference is a high-performance, local LLM orchestration engine designed to achieve GPU-competitive inference speeds on consumer-grade CPUs. By leveraging **Speculative Decoding** (Draft-then-Verify) and a **memory-safe Rust core**, SpudInference targets a $2\times -3\times$ speedup over standard auto-regressive Python implementations.
+SpudInference is a specialized, local-first LLM ecosystem designed to operate on low-end hardware. It bypasses the need for high-end VRAM by utilizing CPU-based training and inference. The project centers on a "Router-Draft" paradigm, where a smaller, faster model handles trivialities while a larger, "thoughtful" model is reserved for complex reasoning.
 
 ---
 
 ## Project Model
+* **Hybrid Dual-Server Inference:** Utilizes a dual-port system (8080/8081) to separate the Turbo and Thought model instances.
+* **Asynchronous PEFT/LoRA Pipeline: Enables model customization on consumer-grade CPUs by training low-rank adapters without altering the base model weights.
+* **Intelligence Routing:** A classification layer that evaluates user intent to optimize token-per-second (TPS) delivery based on query complexity.
 
-### 1. Speculative Decoding Pipeline
-
-The engine utilizes a dual model architecture:
-
-- **Draft Model:** A lightweight, quantized model (e.g., 100M-160M parameters) generates candidate tokens rapidly.
-- **Target Model:** A larger, high-fidelity model (e.g., 7B-8B parameters) validates the candidate sequence in a single parallel forward pass.
-- **Rejection Sampling:** If the Target Model disagrees with a draft token, the sequence is truncated and the Target Model generates the correct correction.
-
-### 2. The Languages
-
-To maximize development velocity without sacrificing runtime performance:
-
-- **Orchestration (Python):** Handles the TUI, user settings, and high-level logic.
-- **Computational Core (Rust):** Utilizing **Candle** ML framework and **SIMD** optimizations for the actual math blocks.
-- **Interface:** Bound via PyO3/Maturin, allowing the Rust core to be called as a native Python module.
 
 ## System Components
+* **Orchestration Layer (`main.py`): The central command-line interface providing a gateway to training, conversion, and chat utilities.
+* **Inference Engine (`brain.py`):** The logic center that managesHTTP requests to the local completion endpoints and executes the "Simple vs. Complex" routing.
+* **Dataset Tooling:** A suite comprising of `create_training.py` and `dataset_handling.py` for manual data entry and JSONL-to-Chat ML conversion.
+* **Training Core (`train.py`): A Hugging Face-integrated pipeline configured for LoRA fine-tuning on Linux-based CPU environments.
+* **Post-Processor (`clean_tensors.py`): A utility to sanitize tensor keys, ensuring compatibility between training outputs and inference model structures.
 
-### U.I./U.X. Layer (Python)
 
-- **Framework:** `Textual` for a high-performance Terminal User Interface. (TUI)
-- **Features:**
-  - **Chat Mode:** Streaming response display with real-time Tokens-Per-Second (TPS) metrics.
-  - **Settings:** Model path configuration,  quantization level selection $\{\text{(Q4\\_K\\_M, Q8\\_0)}\}$, and "Draft-to-Taget" ratio tuning.
-
-### Inference Engine (Rust)
-
-- **Crate Dependencies:** `candle-core`, `candle-transformers`, `rayon` (for data parallelism)
-- **Modularity:** The engine is designed as a standalone library that can be imported into other projects.
+## Project Phases
+* **Phase 1; Data Acquisition:** Synthesizing uncensored datasets and manually refining interaction pairs for model alignment.
+* **Phase 2; Optimization:** Executing CPU-bound fine-tuning and cleaning resulting adapters for deployment.
+* **Phase 3; Deployment:** Running dual-model servers for real-time, routed inference via The SpudBrain interface.
 
 ---
 
-## Development Milestones
-
-
-| Stage   | Milestone        | Metric of Success                                             |
-| ------- | ---------------- | ------------------------------------------------------------- |
-| Phase 1 | Python Baseline  | Establish a TPS baseline using standard `transformers`        |
-| Phase 2 | Rust Core Setup  | Successful "Hello World" inference in Rust via Python import. |
-| Phase 3 | Speculative Loop | Implement the verification logic in Rust; measure speed gain  |
-| Phase 4 | TUI Integration  | TUI local chat that beats Baseline TPS by >50%                |
-| Phase 5 | Polishing        | Polish the applcation to ensure clean, modulated code.        |
-
-
 ## Project Structure
-
 ```plaintext
 SpudInference/
 ├── docs/
@@ -65,7 +39,7 @@ SpudInference/
 ├── src/
 │   ├── engine/                 # Core math and model loading logic
 │   │   └── brain.py
-│   ├── tools
+│   ├── tools/                  # The tools for the models.
 │   │   ├── clean_tensors.py
 │   │   ├── create_training.py
 │   │   ├── dataset_handling.py
@@ -76,4 +50,3 @@ SpudInference/
 ├── README.md
 └── requirements.txt
 ```
-

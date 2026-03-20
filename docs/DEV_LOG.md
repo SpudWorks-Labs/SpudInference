@@ -45,6 +45,9 @@
     - Need to add a project map. (Maybe in the ARCHITECTURE, but I also need to link that)
     - The `ARCHITECTURE.md` now needs to be updated to reflect the actual architecture.
 
+* 21:10
+    - Finished updating the `ARCHITECTURE.md` and now pushing to the repo.
+
 
 ## TO-DO
 [!] Need to have a folder for generated files. (train.txt, datasets, etc.)
