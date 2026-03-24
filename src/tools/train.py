@@ -13,8 +13,6 @@ OUTPUT_DIR = "./spudbrain"
 
 
 def train():
-    print(f"Loading tokenizer from {MODEL_PATH}...")
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_remote_code=True)
     
     if tokenizer.pad_token is None:
         tokenizer.pad_token = tokenizer.eos_token
@@ -67,6 +65,8 @@ def train():
         lines,
         truncation=True,
         padding="max_length",
+    print(f"Loading tokenizer from {MODEL_PATH}...")
+    tokenizer = AutoTokenizer.from_pretrained(MODEL_PATH, trust_r
         max_length=512,
         return_tensors="pt"
     )
